@@ -8,7 +8,7 @@ jobs:
     steps:
       - run:
           name: Test.
-          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "test2 branch"';
+          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "test.txt"';
 version: 2.1
 workflows:
   build_and_deploy:
