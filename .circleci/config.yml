@@ -2,13 +2,20 @@ orbs:
   node: circleci/node@2.0.2
   aws-cli: circleci/aws-cli@2.0.0
 jobs:
-  Test:
+  job1:
     machine:
       enabled: true
     steps:
       - run:
           name: Test.
-          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'mkdir test2.txt';
+          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'ellcome to iiobit';
+  job2:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Test1.
+          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "Wellcome to Devops team"';
 version: 2.1
 workflows:
   build_and_deploy:
