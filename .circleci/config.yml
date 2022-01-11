@@ -14,7 +14,7 @@ version: 2.1
 workflows:
   build_and_deploy:
     jobs:
-      - Test:
+      - job1:
           filters:
             branches:
               only: test4
