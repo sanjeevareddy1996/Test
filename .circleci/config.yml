@@ -2,19 +2,19 @@ orbs:
   node: circleci/node@2.0.2
   aws-cli: circleci/aws-cli@2.0.0
 jobs:
-  job1:
+  Test:
     machine:
       enabled: true
     steps:
       - run:
           name: Test.
-          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'wellcome to innobit systams';
-  job2:
+          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "Wellcome to innobit"';
+  Test:
     machine:
       enabled: true
     steps:
       - run:
-          name: Test1.
+          name: Test.
           command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "Wellcome to Devops team"';
 version: 2.1
 workflows:
@@ -23,4 +23,4 @@ workflows:
       - Test:
           filters:
             branches:
-              only: test3
+              only: test4
