@@ -17,6 +17,13 @@ jobs:
       - run:
           name: job2.
           command: ssh -i "Test.pem" ec2-user@ec2-13-126-40-218.ap-south-1.compute.amazonaws.com 'echo "welcome to devops team" ';
+  job3:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: job3.
+          command: ssh -i "Test.pem" ec2-user@ec2-13-126-40-218.ap-south-1.compute.amazonaws.com 'echo "creat file name" ';
 version: 2.1
 workflows:
   build_and_deploy:
@@ -26,6 +33,10 @@ workflows:
             branches:
               only: test4
       - job2:
+          filters:
+            branches:
+              only: test4
+      - job3:
           filters:
             branches:
               only: test4
