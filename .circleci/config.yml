@@ -8,7 +8,7 @@ jobs:
       enabled: true
     steps:
       - run:
-          name: Test.
+          name: job1.
           command: ssh -i "Test.pem" ec2-user@ec2-13-126-40-218.ap-south-1.compute.amazonaws.com 'echo "welcome to innobit" ';
 version: 2.1
 workflows:
@@ -18,4 +18,3 @@ workflows:
           filters:
             branches:
               only: test4
-              
