@@ -17,9 +17,4 @@ workflows:
           filters:
             branches:
               only: test4
-  build_and_deploy-qa:
-    jobs:
-      - Test:
-          filters:
-            branches:
-              only: test4
+  
