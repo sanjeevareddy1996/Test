@@ -8,7 +8,8 @@ jobs:
     steps:
       - run:
           name: Test.
-          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com './echo.sh';
+          command: ssh ec2-user@ec2-13-232-213-35.ap-south-1.compute.amazonaws.com 'echo "welcome to innobi";
+version: 2.1
 workflows:
   build_and_deploy:
     jobs:
