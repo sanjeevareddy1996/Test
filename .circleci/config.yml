@@ -16,4 +16,4 @@ workflows:
       - Test:
           filters:
             branches:
-              only: main
+              only: test4
