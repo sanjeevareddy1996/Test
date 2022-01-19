@@ -30,5 +30,3 @@ workflows:
           filters:
             branches:
               only: test5
-
-              662331910873.dkr.ecr.eu-north-1.amazonaws.com/nglc-backend-dev:0.1231
