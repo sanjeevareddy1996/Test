@@ -1,0 +1,106 @@
+orbs:
+  aws-eks: circleci/aws-eks@1.1.0
+  aws-ecr: circleci/aws-ecr@7.0.0
+  aws-cli: circleci/aws-cli@2.0.0
+  node: circleci/node@2.0.2
+
+jobs:
+  deploy-dev:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy-Dev.
+          command: ssh ubuntu@13.49.194.155 './node-backend-ssh.sh';
+  health-check-dev:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Health-check-backend-logs.
+          command: ssh ubuntu@13.49.194.155 './backend-health.sh';
+  deploy-qa:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy-qa.
+          command: ssh ubuntu@13.49.194.155 './node-backend-qa-ssh.sh';
+  health-check-qa:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Health-check-backend-logs.
+          command: ssh ubuntu@13.49.194.155 './backend-health-qa.sh';
+version: 2.1
+workflows:
+  build_and_deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_URL_DEV
+          aws-access-key-id: AWS_DEV_ACCESS_KEY
+          aws-secret-access-key: AWS_DEV_SECRET_KEY
+          # context: myContext
+          create-repo: true
+          dockerfile: Env/Dev/Dockerfile
+          no-output-timeout: 20m
+          path: .
+          # profile-name: myProfileName
+          region: AWS_REGION
+          repo: nglc-backend-dev
+          skip-when-tags-exist: false
+          tag: 'latest,0.1$CIRCLE_BUILD_NUM'
+          filters:
+            branches:
+              only: dev_deployment
+      - deploy-dev:
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: dev_deployment
+      - health-check-dev:
+          requires:
+            - deploy-dev
+          filters:
+            branches:
+              only: dev_deployment
+  build_and_deploy-qa:
+    jobs:
+      - deployment-approval-qa:
+          type: approval
+          filters:
+            branches:
+              only: qa_deployment
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_URL_DEV
+          aws-access-key-id: AWS_DEV_ACCESS_KEY
+          aws-secret-access-key: AWS_DEV_SECRET_KEY
+          # context: myContext
+          create-repo: true
+          dockerfile: Env/QA/Dockerfile
+          no-output-timeout: 20m
+          path: .
+          # profile-name: myProfileName
+          region: AWS_REGION
+          repo: nglc-backend-qa
+          skip-when-tags-exist: false
+          tag: 'latest,0.1$CIRCLE_BUILD_NUM'
+          filters:
+            branches:
+              only: qa_deployment
+          requires:
+            - deployment-approval-qa
+      - deploy-qa:
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: qa_deployment
+      - health-check-qa:
+          requires:
+            - deploy-qa
+          filters:
+            branches:
+              only: qa_deployment
